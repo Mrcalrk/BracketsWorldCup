@@ -516,8 +516,8 @@
       min-height: 72px;
       padding: 6px;
       box-shadow: none;
-      background: #ffffff;
-      border-color: #d7d7d7;
+      background: var(--status-bg);
+      border-color: var(--status-border);
     }
 
     body.simple-mode .match-card::before,
@@ -539,14 +539,14 @@
       grid-template-columns: 1fr;
       justify-items: center;
       padding: 3px;
-      background: #ffffff;
-      border-color: #dddddd;
+      background: rgba(255, 255, 255, 0.74);
+      border-color: var(--status-border);
     }
 
     body.simple-mode .team-button.selected {
-      border-color: #111111;
-      background: #ffffff;
-      box-shadow: inset 0 0 0 2px #111111;
+      border-color: var(--status-color);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: inset 0 0 0 2px var(--status-color);
     }
 
     body.simple-mode .team-button:disabled {
@@ -565,7 +565,7 @@
     body.simple-mode .meta {
       margin-top: 5px;
       padding-top: 5px;
-      border-top-color: #eeeeee;
+      border-top-color: var(--status-border);
       color: #111111;
       font-size: 0.55rem;
       line-height: 1.15;
@@ -1148,7 +1148,7 @@
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const appliedCount = applyResults(await response.text());
         updateResultsStatus(
-          `Arquivo ${RESULTS_FILE} carregado de ${displayUrl}. ${appliedCount} resultado(s) aplicado(s).`,
+          `Resultados carregados corretamente - ${appliedCount} resultado(s) aplicado(s).`,
           "ok"
         );
       } catch (error) {
