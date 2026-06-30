@@ -582,6 +582,11 @@
       align-self: stretch;
     }
 
+    body.calendar-mode .match-card.next-game {
+      border-color: var(--blue);
+      box-shadow: inset 0 0 0 2px var(--blue), 0 0 0 3px #d5e7f8;
+    }
+
     body.calendar-mode .center-card {
       display: none;
     }
@@ -600,7 +605,6 @@
     body.simple-mode.calendar-mode .match-card.next-game {
       opacity: 1;
       border-color: var(--blue);
-      box-shadow: inset 0 0 0 2px var(--blue), 0 0 0 3px #d5e7f8;
     }
 
     @media print {
@@ -715,6 +719,7 @@
 
   <script>
     const STORAGE_KEY = "copa-2026-bracket-picks-v1";
+    const RESULTS_FILE = "results.txt";
     const MATCH_ACTIVE_WINDOW_MS = 150 * 60 * 1000;
 
     const teams = {
@@ -759,19 +764,19 @@
     const matches = {
       73: match(73, "Fase de 32", 1, 3, 1, 1, "RSA", "CAN", {
         utc: "2026-06-28T19:00:00Z", tz: "America/Los_Angeles", offset: "UTC-7",
-        stadium: "SoFi Stadium", city: "Inglewood, EUA", fixedWinner: "CAN", score: "África do Sul 0 x 1 Canadá"
+        stadium: "SoFi Stadium", city: "Inglewood, EUA"
       }),
       74: match(74, "Fase de 32", 1, 1, 1, 1, "GER", "PAR", {
         utc: "2026-06-29T20:30:00Z", tz: "America/New_York", offset: "UTC-4",
-        stadium: "Gillette Stadium", city: "Foxborough, EUA", fixedWinner: "PAR", score: "Alemanha 1 x 1 Paraguai; Paraguai 4 x 3 nos pênaltis"
+        stadium: "Gillette Stadium", city: "Foxborough, EUA"
       }),
       75: match(75, "Fase de 32", 1, 4, 1, 1, "NED", "MAR", {
         utc: "2026-06-30T01:00:00Z", tz: "America/Monterrey", offset: "UTC-6",
-        stadium: "Estadio BBVA", city: "Guadalupe, México", fixedWinner: "MAR", score: "Países Baixos 1 x 1 Marrocos; Marrocos 3 x 2 nos pênaltis"
+        stadium: "Estadio BBVA", city: "Guadalupe, México"
       }),
       76: match(76, "Fase de 32", 9, 1, 1, 1, "BRA", "JPN", {
         utc: "2026-06-29T17:00:00Z", tz: "America/Chicago", offset: "UTC-5",
-        stadium: "NRG Stadium", city: "Houston, EUA", fixedWinner: "BRA", score: "Brasil 2 x 1 Japão"
+        stadium: "NRG Stadium", city: "Houston, EUA"
       }),
       77: match(77, "Fase de 32", 1, 2, 1, 1, "FRA", "SWE", {
         utc: "2026-06-30T21:00:00Z", tz: "America/New_York", offset: "UTC-4",
@@ -897,6 +902,7 @@
 
     const dependents = buildDependents();
     let picks = loadPicks();
+    let loadedResults = {};
 
     document.getElementById("reset-button").addEventListener("click", () => {
       picks = {};
@@ -997,7 +1003,7 @@
     }
 
     function getWinner(matchData) {
-      if (matchData.fixedWinner) return teams[matchData.fixedWinner];
+      if (matchData.result) return teams[matchData.result.winnerId];
 
       const pickedId = picks[matchData.id];
       if (!pickedId) return null;
@@ -1009,7 +1015,7 @@
 
     function chooseWinner(matchId, teamCode) {
       const matchData = matches[matchId];
-      if (matchData.fixedWinner) return;
+      if (matchData.result) return;
 
       const participants = getParticipants(matchData);
       if (participants.some((team) => !team)) return;
@@ -1050,7 +1056,7 @@
       const participants = getParticipants(matchData);
       const selected = getWinner(matchData);
       const ready = participants.every(Boolean);
-      const fixed = Boolean(matchData.fixedWinner);
+      const fixed = Boolean(matchData.result);
       const status = fixed ? "defined" : selected ? "chosen" : ready ? "open" : "waiting";
       const isPast = getMatchEndTime(matchData) < Date.now();
       const isNext = matchData.id === nextUpcomingId;
@@ -1079,7 +1085,7 @@
         <div class="teams">
           ${participants.map((team, index) => teamButton(matchData, team, selected, fixed, index)).join("")}
         </div>
-        ${fixed && matchData.score ? `<div class="score">${matchData.score}</div>` : ""}
+        ${fixed && matchData.result ? `<div class="score">${matchData.result.score}</div>` : ""}
         <div class="meta">
           <span class="br-date"><strong>Brasília:</strong> <span class="date-value">${formatDateTime(matchData.utc, "America/Sao_Paulo")}</span></span>
           <span class="local-date"><strong>Data local:</strong> ${formatDateTime(matchData.utc, matchData.tz)}</span>
@@ -1104,6 +1110,99 @@
 
     function getMatchEndTime(matchData) {
       return new Date(matchData.utc).getTime() + MATCH_ACTIVE_WINDOW_MS;
+    }
+
+    async function loadResults() {
+      try {
+        const response = await fetch(`${RESULTS_FILE}?v=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        applyResults(await response.text());
+      } catch (error) {
+        console.warn(`Não foi possível carregar ${RESULTS_FILE}.`, error);
+      } finally {
+        render();
+      }
+    }
+
+    function applyResults(text) {
+      loadedResults = parseResults(text);
+      Object.values(matches).forEach((matchData) => {
+        delete matchData.result;
+      });
+
+      Object.entries(loadedResults).forEach(([matchId, result]) => {
+        if (matches[matchId]) {
+          matches[matchId].result = result;
+          delete picks[matchId];
+          clearDescendants(Number(matchId));
+        }
+      });
+
+      savePicks();
+    }
+
+    function parseResults(text) {
+      const parsed = {};
+      text.split(/\r?\n/).forEach((line, index) => {
+        const cleanLine = line.trim();
+        if (!cleanLine || cleanLine.startsWith("#")) return;
+
+        const parts = cleanLine.split("|").map((part) => part.trim());
+        if (parts.length < 4) {
+          console.warn(`Linha ${index + 1} ignorada em ${RESULTS_FILE}: use numero | pais 1 | pais 2 | resultado`);
+          return;
+        }
+
+        const [matchIdText, teamAName, teamBName, ...scoreParts] = parts;
+        const matchId = Number(matchIdText);
+        const teamAId = findTeamIdByName(teamAName);
+        const teamBId = findTeamIdByName(teamBName);
+        const score = scoreParts.join(" | ");
+
+        if (!matchId || !teamAId || !teamBId || !score) {
+          console.warn(`Linha ${index + 1} ignorada em ${RESULTS_FILE}: dados incompletos.`);
+          return;
+        }
+
+        const winnerId = inferResultWinner(score, teamAId, teamBId);
+        if (!winnerId) {
+          console.warn(`Linha ${index + 1} ignorada em ${RESULTS_FILE}: vencedor não identificado.`);
+          return;
+        }
+
+        parsed[matchId] = { teamAId, teamBId, winnerId, score };
+      });
+      return parsed;
+    }
+
+    function inferResultWinner(score, teamAId, teamBId) {
+      const penaltySegment = score.split(";").find((part) => normalizeText(part).includes("penalt"));
+      if (penaltySegment) {
+        const normalizedPenalty = normalizeText(penaltySegment);
+        if (normalizedPenalty.includes(normalizeText(teams[teamAId].name))) return teamAId;
+        if (normalizedPenalty.includes(normalizeText(teams[teamBId].name))) return teamBId;
+      }
+
+      const scoreMatch = score.match(/(\d+)\s*x\s*(\d+)/i);
+      if (!scoreMatch) return null;
+
+      const goalsA = Number(scoreMatch[1]);
+      const goalsB = Number(scoreMatch[2]);
+      if (goalsA > goalsB) return teamAId;
+      if (goalsB > goalsA) return teamBId;
+      return null;
+    }
+
+    function findTeamIdByName(name) {
+      const normalizedName = normalizeText(name);
+      return Object.values(teams).find((team) => normalizeText(team.name) === normalizedName)?.id || null;
+    }
+
+    function normalizeText(value) {
+      return String(value)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
     }
 
     function teamButton(matchData, team, selected, fixed, index) {
@@ -1156,8 +1255,8 @@
     }
 
     function updateSummary() {
-      const freeMatches = Object.values(matches).filter((matchData) => !matchData.fixedWinner).length;
-      const validPicks = Object.values(matches).filter((matchData) => !matchData.fixedWinner && getWinner(matchData)).length;
+      const freeMatches = Object.values(matches).filter((matchData) => !matchData.result).length;
+      const validPicks = Object.values(matches).filter((matchData) => !matchData.result && getWinner(matchData)).length;
       const finalists = getParticipants(matches[104]).filter(Boolean);
       const champion = getWinner(matches[104]);
 
@@ -1187,7 +1286,7 @@
       return `${matchData.stadium}, ${matchData.city}`;
     }
 
-    render();
+    loadResults();
   </script>
 </body>
 </html>
