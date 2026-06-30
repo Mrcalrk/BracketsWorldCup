@@ -715,6 +715,7 @@
 
   <script>
     const STORAGE_KEY = "copa-2026-bracket-picks-v1";
+    const MATCH_ACTIVE_WINDOW_MS = 150 * 60 * 1000;
 
     const teams = {
       GER: { name: "Alemanha", code: "ALE", flag: "de" },
@@ -1051,7 +1052,7 @@
       const ready = participants.every(Boolean);
       const fixed = Boolean(matchData.fixedWinner);
       const status = fixed ? "defined" : selected ? "chosen" : ready ? "open" : "waiting";
-      const isPast = new Date(matchData.utc).getTime() < Date.now();
+      const isPast = getMatchEndTime(matchData) < Date.now();
       const isNext = matchData.id === nextUpcomingId;
 
       const card = document.createElement("article");
@@ -1097,8 +1098,12 @@
       const now = Date.now();
       const nextMatch = calendarOrder
         .map((id) => matches[id])
-        .find((matchData) => new Date(matchData.utc).getTime() >= now);
+        .find((matchData) => getMatchEndTime(matchData) >= now);
       return nextMatch ? nextMatch.id : null;
+    }
+
+    function getMatchEndTime(matchData) {
+      return new Date(matchData.utc).getTime() + MATCH_ACTIVE_WINDOW_MS;
     }
 
     function teamButton(matchData, team, selected, fixed, index) {
