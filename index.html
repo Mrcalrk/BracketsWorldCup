@@ -157,6 +157,30 @@
       line-height: 1.2;
     }
 
+    .results-status {
+      margin: -6px 0 18px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.82rem;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .results-status.ok {
+      color: var(--green);
+      border-color: #c4e7d5;
+      background: var(--green-soft);
+    }
+
+    .results-status.error {
+      color: #9c2f15;
+      border-color: #efb39e;
+      background: #fff0ea;
+    }
+
     .bracket-scroll {
       overflow-x: auto;
       padding-bottom: 16px;
@@ -457,6 +481,7 @@
     }
 
     body.simple-mode .summary-strip,
+    body.simple-mode .results-status,
     body.simple-mode .footer,
     body.simple-mode .center-card {
       display: none;
@@ -703,6 +728,8 @@
         <strong class="summary-value" id="champion-summary">A definir</strong>
       </div>
     </section>
+
+    <div class="results-status" id="results-status" role="status">Carregando resultados de results.txt...</div>
 
     <section class="bracket-scroll" aria-label="Chaveamento da Copa do Mundo de 2026">
       <div class="bracket-grid" id="bracket"></div>
@@ -1113,12 +1140,24 @@
     }
 
     async function loadResults() {
+      const resultsUrl = new URL(RESULTS_FILE, window.location.href);
+      const displayUrl = resultsUrl.href;
       try {
-        const response = await fetch(`${RESULTS_FILE}?v=${Date.now()}`, { cache: "no-store" });
+        resultsUrl.searchParams.set("v", Date.now());
+        const response = await fetch(resultsUrl, { cache: "no-store" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        applyResults(await response.text());
+        const appliedCount = applyResults(await response.text());
+        updateResultsStatus(
+          `Arquivo ${RESULTS_FILE} carregado de ${displayUrl}. ${appliedCount} resultado(s) aplicado(s).`,
+          "ok"
+        );
       } catch (error) {
-        console.warn(`Não foi possível carregar ${RESULTS_FILE}.`, error);
+        const protocolHint = window.location.protocol === "file:"
+          ? " Abra o HTML por um servidor local para permitir a leitura do TXT."
+          : "";
+        const errorMessage = `Erro ao carregar ${RESULTS_FILE} em ${displayUrl}. 0 resultado(s) aplicado(s).${protocolHint}`;
+        updateResultsStatus(errorMessage, "error");
+        console.warn(errorMessage, error);
       } finally {
         render();
       }
@@ -1139,6 +1178,7 @@
       });
 
       savePicks();
+      return Object.keys(loadedResults).length;
     }
 
     function parseResults(text) {
@@ -1205,6 +1245,13 @@
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase();
+    }
+
+    function updateResultsStatus(message, state) {
+      const status = document.getElementById("results-status");
+      if (!status) return;
+      status.textContent = message;
+      status.className = `results-status ${state}`;
     }
 
     function teamButton(matchData, team, selected, fixed, index) {
