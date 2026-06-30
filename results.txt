@@ -2,3 +2,31 @@
 74 | Alemanha | Paraguai | Alemanha 1 x 1 Paraguai; Paraguai 4 x 3 nos pênaltis
 75 | Países Baixos | Marrocos | Países Baixos 1 x 1 Marrocos; Marrocos 3 x 2 nos pênaltis
 76 | Brasil | Japão | Brasil 2 x 1 Japão
+77 | França | Suécia |
+78 | Costa do Marfim | Noruega |
+79 | México | Equador |
+80 | Inglaterra | RD Congo |
+81 | Estados Unidos | Bósnia e Herzegovina |
+82 | Bélgica | Senegal |
+83 | Portugal | Croácia |
+84 | Espanha | Áustria |
+85 | Suíça | Argélia |
+86 | Argentina | Cabo Verde |
+87 | Colômbia | Gana |
+88 | Austrália | Egito |
+89 | Vencedor J74 | Vencedor J77 |
+90 | Vencedor J73 | Vencedor J75 |
+91 | Vencedor J76 | Vencedor J78 |
+92 | Vencedor J79 | Vencedor J80 |
+93 | Vencedor J83 | Vencedor J84 |
+94 | Vencedor J81 | Vencedor J82 |
+95 | Vencedor J86 | Vencedor J88 |
+96 | Vencedor J85 | Vencedor J87 |
+97 | Vencedor J89 | Vencedor J90 |
+98 | Vencedor J93 | Vencedor J94 |
+99 | Vencedor J91 | Vencedor J92 |
+100 | Vencedor J95 | Vencedor J96 |
+101 | Vencedor J97 | Vencedor J98 |
+102 | Vencedor J99 | Vencedor J100 |
+103 | Perdedor J101 | Perdedor J102 |
+104 | Vencedor J101 | Vencedor J102 |
