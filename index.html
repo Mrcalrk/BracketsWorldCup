@@ -1148,18 +1148,20 @@
         if (!cleanLine || cleanLine.startsWith("#")) return;
 
         const parts = cleanLine.split("|").map((part) => part.trim());
-        if (parts.length < 4) {
-          console.warn(`Linha ${index + 1} ignorada em ${RESULTS_FILE}: use numero | pais 1 | pais 2 | resultado`);
+        if (parts.length < 3) {
+          console.warn(`Linha ${index + 1} ignorada em ${RESULTS_FILE}: use numero | pais 1 | pais 2 | resultado opcional`);
           return;
         }
 
         const [matchIdText, teamAName, teamBName, ...scoreParts] = parts;
         const matchId = Number(matchIdText);
+        const score = scoreParts.join(" | ");
+        if (!matchId || !score) return;
+
         const teamAId = findTeamIdByName(teamAName);
         const teamBId = findTeamIdByName(teamBName);
-        const score = scoreParts.join(" | ");
 
-        if (!matchId || !teamAId || !teamBId || !score) {
+        if (!teamAId || !teamBId) {
           console.warn(`Linha ${index + 1} ignorada em ${RESULTS_FILE}: dados incompletos.`);
           return;
         }
