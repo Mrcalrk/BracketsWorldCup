@@ -701,7 +701,6 @@
       <div>
         <p class="eyebrow">Copa do Mundo FIFA 2026</p>
         <h1>Simulador do mata-mata</h1>
-        <p class="subtitle">Chaveamento baseado no modelo da imagem fornecida, com resultados já definidos preservados e próximos confrontos preenchidos a partir das suas escolhas.</p>
       </div>
       <div class="actions">
         <button class="action-button" type="button" id="reset-button">Limpar escolhas</button>
@@ -736,10 +735,6 @@
     </section>
 
     <footer class="footer">
-      Dados de calendário consultados em 30/06/2026 no
-      <a href="https://digitalhub.fifa.com/m/1be9ce37eb98fcc5/original/FWC26-Match-Schedule_English.pdf" target="_blank" rel="noreferrer">calendário oficial da FIFA</a>
-      e conferidos com a página do
-      <a href="https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage" target="_blank" rel="noreferrer">mata-mata da Copa do Mundo de 2026</a>.
       Bandeiras carregadas via <a href="https://flagcdn.com/" target="_blank" rel="noreferrer">FlagCDN</a>.
     </footer>
   </main>
@@ -1131,7 +1126,7 @@
       const now = Date.now();
       const nextMatch = calendarOrder
         .map((id) => matches[id])
-        .find((matchData) => getMatchEndTime(matchData) >= now);
+        .find((matchData) => !matchData.result && getMatchEndTime(matchData) >= now);
       return nextMatch ? nextMatch.id : null;
     }
 
