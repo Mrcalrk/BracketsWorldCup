@@ -5,7 +5,7 @@
 77 | França | Suécia | França 3 x 0 Suécia
 78 | Costa do Marfim | Noruega |  Costa do Marfim 1 x 2 Noruega
 79 | México | Equador | México 2 x 0 Equador
-80 | Inglaterra | RD Congo |
+80 | Inglaterra | RD Congo | Inglaterra 2 x 1 RD Congo
 81 | Estados Unidos | Bósnia e Herzegovina |
 82 | Bélgica | Senegal |
 83 | Portugal | Croácia |
