@@ -6,7 +6,7 @@
 78 | Costa do Marfim | Noruega |  Costa do Marfim 1 x 2 Noruega
 79 | México | Equador | México 2 x 0 Equador
 80 | Inglaterra | RD Congo | Inglaterra 2 x 1 RD Congo
-81 | Estados Unidos | Bósnia e Herzegovina |
+81 | Estados Unidos | Bósnia e Herzegovina | Estados Unidos 2 x 0 Bósnia e Herzegovina
 82 | Bélgica | Senegal | Bélgica 3 x 2 Senegal
 83 | Portugal | Croácia |
 84 | Espanha | Áustria |
