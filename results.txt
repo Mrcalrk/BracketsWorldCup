@@ -10,7 +10,7 @@
 82 | Bélgica | Senegal | Bélgica 3 x 2 Senegal
 83 | Portugal | Croácia | Portugal 2 x 1 Croácia
 84 | Espanha | Áustria | Espanha 3 x 0 Áustria
-85 | Suíça | Argélia |
+85 | Suíça | Argélia | Suíça 2 x 0 Argélia
 86 | Argentina | Cabo Verde |
 87 | Colômbia | Gana |
 88 | Austrália | Egito |
