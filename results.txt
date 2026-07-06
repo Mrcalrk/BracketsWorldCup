@@ -18,7 +18,7 @@
 90 | Canadá | Marrocos | Canadá 0 x 3 Marrocos
 91 | Brasil | Noruega | Brasil 1 x 2 Noruega
 92 | México | Inglaterra | México 2 x 3 Inglaterra
-93 | Vencedor J83 | Vencedor J84 |
+93 | Portugal | Espanha | Portugal 0 x 1 Espanha
 94 | Vencedor J81 | Vencedor J82 |
 95 | Vencedor J86 | Vencedor J88 |
 96 | Vencedor J85 | Vencedor J87 |
