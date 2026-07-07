@@ -19,7 +19,7 @@
 91 | Brasil | Noruega | Brasil 1 x 2 Noruega
 92 | México | Inglaterra | México 2 x 3 Inglaterra
 93 | Portugal | Espanha | Portugal 0 x 1 Espanha
-94 | Vencedor J81 | Vencedor J82 |
+94 | Estados Unidos | Bélgica | Estados Unidos 1 x 4 Bélgica
 95 | Vencedor J86 | Vencedor J88 |
 96 | Vencedor J85 | Vencedor J87 |
 97 | Vencedor J89 | Vencedor J90 |
