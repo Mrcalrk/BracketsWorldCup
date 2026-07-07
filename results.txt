@@ -20,8 +20,8 @@
 92 | México | Inglaterra | México 2 x 3 Inglaterra
 93 | Portugal | Espanha | Portugal 0 x 1 Espanha
 94 | Estados Unidos | Bélgica | Estados Unidos 1 x 4 Bélgica
-95 | Vencedor J86 | Vencedor J88 |
-96 | Vencedor J85 | Vencedor J87 |
+95 | Argentina | Egito | Argentina 3 x 2 Egito
+96 | Suiça | Colômbia | Suiça 0 x 0 Colômbia; Suiça 4 x 2 nos pênaltis
 97 | Vencedor J89 | Vencedor J90 |
 98 | Vencedor J93 | Vencedor J94 |
 99 | Vencedor J91 | Vencedor J92 |
