@@ -21,11 +21,11 @@
 93 | Portugal | Espanha | Portugal 0 x 1 Espanha
 94 | Estados Unidos | Bélgica | Estados Unidos 1 x 4 Bélgica
 95 | Argentina | Egito | Argentina 3 x 2 Egito
-96 | Suiça | Colômbia | Suiça 0 x 0 Colômbia; Suiça 4 x 3 nos pênaltis
+96 | Suíça | Colômbia | Suíça 0 x 0 Colômbia; Suiça 4 x 3 nos pênaltis
 97 | França | Marrocos | França 2 x 0 Marrocos
 98 | Espanha | Bélgica | Espanha 2 x 1 Bélgica
 99 | Noruega | Inglaterra | Noruega 1 x 2 Inglaterra
-100 | Vencedor J95 | Vencedor J96 |
+100 | Argentina | Suíça | Argentina 3 x 1 Suíça
 101 | Vencedor J97 | Vencedor J98 |
 102 | Vencedor J99 | Vencedor J100 |
 103 | Perdedor J101 | Perdedor J102 |
