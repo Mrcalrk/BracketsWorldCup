@@ -26,7 +26,7 @@
 98 | Espanha | Bélgica | Espanha 2 x 1 Bélgica
 99 | Noruega | Inglaterra | Noruega 1 x 2 Inglaterra
 100 | Argentina | Suíça | Argentina 3 x 1 Suíça
-101 | Vencedor J97 | Vencedor J98 |
+101 | França | Espanha | França 0 x 2 Espanha
 102 | Vencedor J99 | Vencedor J100 |
 103 | Perdedor J101 | Perdedor J102 |
 104 | Vencedor J101 | Vencedor J102 |
